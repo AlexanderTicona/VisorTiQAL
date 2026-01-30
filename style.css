@@ -1,0 +1,275 @@
+:root {
+    --bg-dark: #0c0c0c;
+    --header-bg: #181818;
+    --accent: #00fbff;
+    --border: #2a2a2a;
+    --sidebar-w: 70px;
+    --footer-h: 80px; /* Altura fija para el footer */
+    --header-h: 50px; /* Altura fija para el header */
+}
+
+body {
+    margin: 0; 
+    background: var(--bg-dark); 
+    color: white;
+    font-family: 'Segoe UI', sans-serif; 
+    height: 100vh;
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden; /* Evita el scroll global */
+}
+
+/* Header Fijo */
+#main-header {
+    height: var(--header-h); 
+    background: var(--header-bg);
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    padding: 0 20px; 
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0; /* No permite que el header se encoja */
+}
+
+#kmDisplay { font-size: 22px; font-weight: bold; color: var(--accent); }
+
+/* Cuerpo de la App (Sidebar + Dash) */
+#app-container { 
+    flex-grow: 1; 
+    display: flex; 
+    overflow: hidden; /* Contiene el scroll solo aquí si fuera necesario */
+}
+
+/* Sidebar Pestañas */
+#sidebar {
+    width: var(--sidebar-w); 
+    background: var(--header-bg);
+    border-right: 1px solid var(--border);
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding-top: 10px;
+    flex-shrink: 0;
+}
+
+.tab-btn {
+    background: transparent; border: none; color: #666; width: 100%;
+    padding: 15px 0; cursor: pointer; font-size: 20px; transition: 0.3s;
+    text-align: center;
+}
+.tab-btn span { font-size: 9px; font-weight: bold; display: block; margin-top: 4px; }
+.tab-btn:hover { color: #aaa; }
+.tab-btn.active { 
+    color: var(--accent); 
+    border-left: 3px solid var(--accent); 
+    background: rgba(0, 251, 255, 0.05); 
+}
+
+.separator { height: 1px; background: var(--border); width: 70%; margin: 10px 0; }
+
+/* Dashboard Dinámico */
+#main-dashboard { 
+    flex-grow: 1; 
+    display: grid; 
+    gap: 8px; 
+    padding: 10px; 
+    height: 100%; /* Ocupa el alto disponible del app-container */
+}
+
+/* Lógica de Layouts (Pestañas) */
+.layout-seccion #panel-planta, .layout-seccion #panel-perfil { display: none; }
+.layout-seccion #panel-seccion { grid-column: 1/-1; grid-row: 1/-1; }
+
+.layout-planta #panel-seccion, .layout-planta #panel-perfil { display: none; }
+.layout-planta #panel-planta { grid-column: 1/-1; grid-row: 1/-1; }
+
+.layout-perfil #panel-planta, .layout-perfil #panel-seccion { display: none; }
+.layout-perfil #panel-perfil { grid-column: 1/-1; grid-row: 1/-1; }
+
+.layout-multi { 
+    grid-template-columns: 1fr 1fr; 
+    grid-template-rows: 1fr 2fr; 
+}
+.layout-multi #panel-seccion { grid-column: span 2; }
+
+/* Paneles y HUD */
+.panel {
+    background: #000;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: visible; /* Cambiar hidden por visible para que no corte botones */
+    min-height: 0;    /* Permite que el panel se encoja en modo multi */
+}
+.panel header { 
+    background: #1a1a1a; 
+    font-size: 10px; 
+    padding: 4px; 
+    text-align: center; 
+    color: #888; 
+    text-transform: uppercase;
+}
+#canvasContainer {
+    position: relative;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* El recorte solo ocurre aquí para el canvas */
+}
+canvas { width: 100%; height: 100%; display: block; }
+
+#hud { 
+    position: absolute; 
+    top: 10px; 
+    right: 10px; 
+    background: rgba(0,0,0,0.8); 
+    border: 1px solid var(--accent); 
+    padding: 8px; 
+    border-radius: 4px; 
+    font-family: monospace; 
+    z-index: 10; 
+    font-size: 12px;
+    pointer-events: none;
+}
+.hud-val { color: var(--accent); font-weight: bold; }
+
+/* Footer Fijo con Slider */
+#main-footer { 
+    height: var(--footer-h); 
+    background: var(--header-bg); 
+    border-top: 1px solid var(--border); 
+    display: flex; 
+    flex-direction: column; 
+    padding: 10px 20px; 
+    flex-shrink: 0; /* Impide que el footer desaparezca */
+    z-index: 100;
+}
+
+#tool-bar { 
+    font-size: 12px; 
+    color: #888; 
+    margin-bottom: 8px; 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#tool-bar input { 
+    background: #333; 
+    border: 1px solid #444; 
+    color: white; 
+    width: 50px; 
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+#tool-bar input:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+.slider-wrapper { 
+    width: 100%; 
+    display: flex;
+    align-items: center;
+}
+input[type=range] { 
+    width: 100%; 
+    accent-color: var(--accent); 
+    cursor: pointer; 
+    height: 20px;
+}
+.canvas-wrapper, #canvasContainer {
+    position: relative;
+    flex-grow: 1;
+}
+
+.btn-reset-mini {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    z-index: 100;
+}
+
+.btn-reset-mini:hover {
+    background: rgba(0, 251, 255, 0.2);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+#visorCanvas {
+    touch-action: none;        /* Bloquea gestos nativos (zoom/scroll) del navegador */
+    -webkit-user-select: none; /* Evita que se seleccione el canvas como si fuera texto (iOS) */
+    user-select: none;         /* Evita la selección en otros navegadores */
+    display: block;            /* Asegura que se comporte como un bloque sólido */
+    cursor: crosshair;         /* Cambia el puntero a una mira en PC */
+}
+
+/* Opcional: Haz los botones un poco más grandes para que sea fácil tocarlos con el dedo */
+.btn-reset-mini {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+}
+/* 1. Contenedor principal: Centra los dos recuadros y les da espacio */
+.km-wrapper {
+    display: flex;
+    gap: 8px; /* Espacio de separación entre los dos cuadros */
+    align-items: center;
+    justify-content: center;
+}
+
+/* 2. Estilo base para ambos recuadros (PK y el Número) */
+.km-box {
+    background: #000;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+}
+
+/* 3. Recuadro específico para la etiqueta PK */
+.label-box {
+    color: #666;
+    font-weight: bold;
+    font-size: 14px;
+    background: var(--header-bg);
+    user-select: none; /* No se puede seleccionar el texto PK */
+}
+
+/* 4. Recuadro específico para el Input */
+.input-box {
+    min-width: 140px;
+    transition: border-color 0.2s;
+}
+
+/* 5. El Input de texto (limpio, sin bordes propios) */
+#kmInput {
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-size: 18px;
+    font-weight: bold;
+    font-family: monospace;
+    width: 100%;
+    outline: none;
+    text-align: center; /* Texto centrado para que se vea profesional */
+}
+
+/* 6. Efecto visual cuando haces clic para escribir */
+.input-box:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 251, 255, 0.2);
+}

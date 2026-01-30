@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
+    
+    <title>Visor TiQAL</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header id="main-header">
+        <div class="brand">Visor TiQAL</div>
+        <div class="km-wrapper">
+            <div class="km-box label-box">PK</div>
+            <div class="km-box input-box">
+                <input type="text" id="kmInput" value="ESPERANDO ARCHIVO..." title="Presiona Enter para buscar">
+            </div>
+        </div>
+        <button class="btn-load" onclick="document.getElementById('fileInput').click()">📁 CARGAR JSON</button>
+        <input type="file" id="fileInput" style="display:none" accept=".json">
+    </header>
+
+    <div id="app-container">
+        <aside id="sidebar">
+            <button class="tab-btn active" onclick="changeLayout('layout-seccion')">📐<br><span>SECCIÓN</span></button>
+            <button class="tab-btn" onclick="changeLayout('layout-planta')">🗺️<br><span>PLANTA</span></button>
+            <button class="tab-btn" onclick="changeLayout('layout-perfil')">📉<br><span>PERFIL</span></button>
+            <div class="separator"></div>
+            <button class="tab-btn" onclick="changeLayout('layout-multi')">🔲<br><span>MIXTO</span></button>
+        </aside>
+
+        <main id="main-dashboard" class="layout-seccion">
+            <section class="panel" id="panel-planta">
+    <header>VISTA DE PLANTA</header>
+    <div class="canvas-wrapper">
+        <canvas id="canvasPlanta"></canvas>
+        <button class="btn-reset-mini" onclick="resetView('planta')" title="Centrar Planta">⟲</button>
+    </div>
+</section>
+
+<section class="panel" id="panel-perfil">
+    <header>VISTA DE PERFIL LONGITUDINAL</header>
+    <div class="canvas-wrapper">
+        <canvas id="canvasPerfil"></canvas>
+        <button class="btn-reset-mini" onclick="resetView('perfil')" title="Centrar Perfil">⟲</button>
+    </div>
+</section>
+
+<section class="panel" id="panel-seccion">
+    <header>VISTA DE SECCIÓN TRANSVERSAL</header>
+    <div id="canvasContainer">
+        <canvas id="visorCanvas"></canvas>
+        
+        <div id="hud" style="display: none;">
+            Elevación (Z): <span id="hudY">0.00</span> m<br>
+            Desfase: <span id="hudX">0.00</span> m
+        </div>
+        
+        <button class="btn-reset-mini" onclick="resetView('seccion')" title="Centrar Sección">⟲</button>
+    </div>
+</section>
+        </main>
+    </div>
+
+    <footer id="main-footer">
+        <div id="tool-bar">
+            <span>Grilla X: <input type="number" id="inpGridX" value="5" step="1"> m</span>
+            <span>Grilla Y: <input type="number" id="inpGridY" value="5" step="1"> m</span>
+        </div>
+        <div class="slider-wrapper">
+            <input type="range" id="stationSlider" min="0" max="0" value="0">
+        </div>
+    </footer>
+
+    <script src="js/state.js"></script>
+    <script src="js/seccion.js"></script>
+    <script src="js/planta.js"></script>
+    <script src="js/perfil.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
