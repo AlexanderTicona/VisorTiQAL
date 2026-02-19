@@ -45,6 +45,11 @@ function dibujarSeccion(seccion) {
         seccion._cach = { minX, maxX, minY, maxY };
     }
 
+    // Forzar simetría en X (Uniformidad)
+    const maxDist = Math.max(Math.abs(minX), Math.abs(maxX));
+    minX = -maxDist;
+    maxX = maxDist;
+
     const rangeX = (maxX - minX) * 1.0; //Gap o margen de seguridad
     const rangeY = (maxY - minY) * 1.2; //Gap o margen de seguridad
     const scale = Math.min(W / rangeX, H / rangeY);
